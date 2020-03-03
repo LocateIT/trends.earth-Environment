@@ -1,5 +1,5 @@
-FROM python:3.6
-MAINTAINER Raul Requero raul.requero@vizzuality.com
+FROM python:3.7
+MAINTAINER Alex Zvoleff azvoleff@conservation.org
 
 ENV USER script
 
@@ -19,8 +19,7 @@ RUN apt-get update && apt-get -yq dist-upgrade		\
     ca-certificates					\
     sudo						\
     locales						\
-    # libav is needed to animate matplolib stuff
-    libav-tools 					\
+    ffmpeg \
     # ICU gives unicode libraries. Necessary for osgeo
     icu-devtools					\
     && apt-get clean                                    \
@@ -31,7 +30,7 @@ ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
 
-RUN pip install earthengine-api==0.1.102 requests==2.12.4
+RUN pip install earthengine-api==0.1.213 requests==2.23.0 google-auth==1.11.2
 
 COPY gefcore /project/gefcore
 COPY main.py /project/main.py

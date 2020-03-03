@@ -7,7 +7,8 @@ from __future__ import print_function
 import ee
 import os
 import logging
-from oauth2client.service_account import ServiceAccountCredentials
+
+from google.oauth2 import service_account
 
 from gefcore.loggers import get_logger_by_env
 from gefcore.api import patch_execution
@@ -20,16 +21,17 @@ logging.basicConfig(
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ENV = os.getenv('ENV')
-EE_SERVICE_ACOUNT = os.getenv('EE_SERVICE_ACCOUNT', None)
-if EE_SERVICE_ACOUNT:
-    logging.info('Authenticating earth engine')
-    gee_credentials = ServiceAccountCredentials.from_p12_keyfile(
-        os.getenv('EE_SERVICE_ACCOUNT', ''),
-        os.path.join(PROJECT_DIR, 'privatekey.pem'),
-        scopes = ee.oauth.SCOPE
-    )
 
-    ee.Initialize(gee_credentials)
+logging.info('Authenticating earth engine')
+# gee_credentials = service_account.Credentials.from_service_account_file(
+#     os.path.join(PROJECT_DIR, 'service_account.json'),
+#     scopes = ee.oauth.SCOPES
+# )
+gee_credentials = ee.ServiceAccountCredentials(
+    email=None,
+    key_file=os.path.join(PROJECT_DIR, 'service_account.json')
+)
+ee.Initialize(gee_credentials)
 
 def change_status_ticket(status):
     """Ticket status changer"""
