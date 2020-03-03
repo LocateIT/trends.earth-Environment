@@ -13,7 +13,9 @@ from gefcore.api import patch_execution
 
 # Silence warning about file_cache being unavailable. See more here:
 # https://github.com/googleapis/google-api-python-client/issues/299
-logging.getLogger('googleapiclient.discovery_cache').setLevel(logging.ERROR)
+logging.getLogger('googleapiclient').setLevel(logging.ERROR)
+logging.getLogger('urllib3').setLevel(logging.ERROR)
+logging.getLogger('google_auth_httplib2').setLevel(logging.ERROR)
 
 logging.basicConfig(
     level='DEBUG',
