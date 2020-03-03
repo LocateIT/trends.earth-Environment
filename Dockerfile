@@ -1,4 +1,4 @@
-FROM python:3.7
+FROM continuumio/miniconda3
 MAINTAINER Alex Zvoleff azvoleff@conservation.org
 
 ENV USER script
@@ -10,7 +10,6 @@ RUN groupadd -r $USER && useradd -r -g $USER $USER
 RUN apt-get update && apt-get -yq dist-upgrade		\
     && apt-get install -yq --no-install-recommends	\
     wget         					\
-    python-dev						\
     gfortran						\
     gdal-bin						\
     libgdal-dev						\
@@ -30,7 +29,13 @@ ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
 
-RUN pip install earthengine-api==0.1.213 requests==2.23.0 google-auth==1.11.2
+RUN conda create -n env python=3.8
+RUN echo "source activate env" > ~/.bashrc
+ENV PATH /opt/conda/envs/env/bin:$PATH
+
+RUN conda install -n env -c conda-forge earthengine-api
+RUN conda install -n env -c conda-forge gdal
+RUN conda install -n env requests
 
 COPY gefcore /project/gefcore
 COPY main.py /project/main.py

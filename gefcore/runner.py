@@ -8,10 +8,12 @@ import ee
 import os
 import logging
 
-from google.oauth2 import service_account
-
 from gefcore.loggers import get_logger_by_env
 from gefcore.api import patch_execution
+
+# Silence warning about file_cache being unavailable. See more here:
+# https://github.com/googleapis/google-api-python-client/issues/299
+logging.getLogger('googleapiclient.discovery_cache').setLevel(logging.ERROR)
 
 logging.basicConfig(
     level='DEBUG',
@@ -23,15 +25,13 @@ PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ENV = os.getenv('ENV')
 
 logging.info('Authenticating earth engine')
-# gee_credentials = service_account.Credentials.from_service_account_file(
-#     os.path.join(PROJECT_DIR, 'service_account.json'),
-#     scopes = ee.oauth.SCOPES
-# )
+key_file=os.path.join(PROJECT_DIR, 'service_account.json')
 gee_credentials = ee.ServiceAccountCredentials(
     email=None,
     key_file=os.path.join(PROJECT_DIR, 'service_account.json')
 )
 ee.Initialize(gee_credentials)
+logging.info('Authenticated.')
 
 def change_status_ticket(status):
     """Ticket status changer"""
