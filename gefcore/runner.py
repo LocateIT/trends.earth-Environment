@@ -40,7 +40,7 @@ def change_status_ticket(status):
     if ENV != 'dev':
         patch_execution(json={"status": status})
     else:
-        logging.info('Channing to RUNNING')
+        logging.info('Changing to RUNNING')
 
 def send_result(results):
     """Results sender"""
