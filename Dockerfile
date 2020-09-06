@@ -46,4 +46,4 @@ RUN chown $USER:$USER /project
 
 WORKDIR /project
 
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["sh","./entrypoint.sh"]
