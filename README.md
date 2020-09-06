@@ -12,4 +12,6 @@ Check out the other parts of the GEF project:
 
 ## Getting started
 
-In progress...
+### Publish package
+
+To publish the package to docker use [these instructions](https://docs.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-docker-for-use-with-github-packages)
